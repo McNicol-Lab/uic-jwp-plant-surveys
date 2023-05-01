@@ -1,0 +1,99 @@
+---
+title: "R Notebook"
+output: html_document
+  
+---
+
+
+
+
+```{r load-packages, echo = F, message = F}
+library(readxl)
+library(tidyverse)
+library(janitor)
+library(readr)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+```
+
+```{r box-plot-of-metrics-through-time-mean-wt-c}
+jwp_variables %>% 
+  ggplot(aes(mean_wt_c)) +
+  geom_boxplot() +
+  facet_wrap(~year)
+```
+```{r box-plot-of-metrics-through-time-total-richness}
+jwp_variables %>% 
+  ggplot(aes(x = factor(year), y = total_richness)) + 
+  geom_boxplot() +
+  labs(title= "Total Species Richness", 
+       x = "Year",
+       y = "Total Richness") +
+  theme(axis.title.x = element_text(size =  25),
+        title = element_text(size = 27),
+        axis.text = element_text(size = 22))
+```
+```{r box-plot-of-metrics-through-time-total-cover}
+jwp_variables %>% 
+  ggplot(aes(factor(year),total_cover)) +
+  geom_boxplot() 
+```
+
+```{r histogram-of-total-richness-2020-survey}
+variables_2020 %>% 
+  ggplot(aes(total_richness)) +
+  geom_histogram()
+```
+
+```{r histogram-of-mean-wt-c-2020-survey}
+variables_2020 %>% 
+  ggplot(aes(mean_wt_c)) +
+  geom_histogram()
+```
+```{r histogram-of-total-richness-2020-survey}
+variables_2020 %>% 
+  ggplot(aes(total_richness)) +
+  geom_histogram()
+```
+```{r histogram-of-total-richness-2020-survey}
+variables_2020 %>% 
+  ggplot(aes(total_cover)) +
+  geom_histogram() 
+  
+```
+```{r histogram-of-richness-change-2020-survey}
+richness_variations %>% 
+  ggplot(aes(richness_change)) +
+  geom_histogram()
+```
+
+```{r barplots-relative-abundance-highes-c-value-species}
+jwp_multi_year_survey %>% 
+  select(genus, species, c_value) %>%  
+  filter(c_value > 7) %>% 
+  ggplot(aes(genus)) +
+  geom_bar()
+
+```
+
+## use count(genus, species)  take output of this count and pipe into bar plot look at slides for bar pltos 
+## abundance plot of the observations of these high conservatism species(maybe compare 1979 to 2020), bar plot of high conservtive species 
+
+```{r barplots-relative-abundance-highes-c-value-species-2020}
+jwp_multi_year_survey %>% 
+  select(genus, species, c_value, year) %>%  
+  filter(c_value > 7, year == 2020 | year == 1979) %>% 
+  ggplot(aes(genus, fill = factor(year))) +
+  geom_bar() +
+  coord_flip() +
+  labs(title= "Abundance of High C-value species in 1979 and 2020", 
+       x = "Genus",
+       y= "Quantity") +
+  theme(axis.title.x = element_text(size =  20),
+        axis.title.y = element_text(size = 20),
+        title = element_text(size = 22))
+  
+  
+```
+
